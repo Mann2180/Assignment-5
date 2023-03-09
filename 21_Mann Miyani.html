@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        :root {
+            --helper-tint: #f3f4ff;
+            --gradientSupport: -webkit-linear-gradient(0deg,
+                    rgb(132 144 255) 0%,
+                    rgb(98 189 252) 100%);
+            --shadowSupport: 0 2rem 2rem 0 rgb(132 144 255/30%);
+
+        }
+
+
+        .container {
+            margin: auto;
+            border: 5px solid rgb(0, 0, 0);
+            font-size: 30px;
+            padding: 10px;
+            text-align: center;
+            height: 100%;
+            width: 98%;
+            background-color: #e4e4e4;
+
+        }
+
+        .form {
+            max-width: 70rem;
+            margin: 0 auto;
+            margin-top: 9rem;
+            transition: all 0.3s linear;
+
+        }
+
+        .form .grid {
+            gap: 3.2rem;
+        }
+
+        .container .form {
+            display: flex;
+            flex-direction: column;
+            gap: 3.2rem;
+        }
+
+        .container input {
+            padding: 1.5rem 2rem;
+            border: 0.1rem solid #c9c9c9;
+            font-size: 1.6rem;
+            font-family: "work sans";
+            width: 55%;
+        }
+
+        .container input[type="submit"],
+        input[type="reset"] {
+            max-width: 30%;
+            border: none;
+        }
+
+        #btn,#pbtn {
+            background: var(--gradientSupport);
+            padding: 1.6rem 3.2rem;
+            border: none;
+            color: var(--helper-tint);
+            display: inline-block;
+            text-transform: uppercase;
+            font-size: 1.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            -webkit-transition: all 0.3s ease 0s;
+            -moz-transition: all 0.3s ease 0s;
+            -o-transition: all 0.3s ease 0s;
+        }
+
+        #btn:hover,
+        #btn:active {
+            box-shadow: var(--shadowSupport)
+        }
+
+        #outputText {
+            color: rgb(248, 6, 6);
+        }
+    </style>
+</head>
+
+<body>
+    <section class="container">
+
+        <h2> A simple guess the number type game..</h2>
+        <p>Guess a number between 1 to 100..</p>
+        <p id="outputText">Enter a number below..</p>
+        <div class="resultParas">
+            <p class="guesses"></p>
+            <p class="lastResult"></p>
+            <p class="lowOrHi"></p>
+        </div>
+
+
+
+        <div class="form grid">
+            <div>
+                <input type="text" placeholder="0" id="number" class="number">
+            </div>
+
+            <div class="buttons">
+                <input type="submit" value="submit now" id="btn" class="btn">
+                <input type="reset" value="Start new game" id="pbtn">
+            </div>
+
+        </div>
+
+    </section>
+
+    <script>
+
+
+        const guesses = document.querySelector('.guesses');
+        const lastResult = document.querySelector('.lastResult');
+        const lowOrHi = document.querySelector('.lowOrHi');
+
+        let btn = document.querySelector('.btn');
+        let output = document.querySelector('.outputText')
+        let number = Math.floor(Math.random() * 100 + 1);
+        console.log(number);
+
+        let guesscount = 1;
+        let resetButton;
+
+        btn.addEventListener('click', function () {
+            let userGuess = document.getElementById('number').value;
+
+            if (guesscount == 1) {
+                guesses.textContent = 'Previous guesses: ';
+            }
+
+            guesses.textContent += userGuess + ' ';
+
+
+            if (userGuess == number) {
+                lastResult.textContent = (`you guessed  right it was , ${number}` + "  No.of guesses:-" + guesscount);
+                lastResult.style.color = 'green';
+                lowOrHi.textContent = '';
+                setGameOver();
+            }
+
+            else if (guesscount == 10) {
+                lastResult.textContent = '!!!GAME OVER!!!';
+                lowOrHi.textContent = '';
+                setGameOver();
+            }
+
+
+
+            else if (userGuess < number) {
+
+                lowOrHi.textContent = ("you guessed too low number , " + "\nplease guessed too high number");
+
+            };
+            if (userGuess > number) {
+                lowOrHi.textContent = ("you guessed too high number , " + "\nplease guessed too low number");
+
+            }
+            guesscount++;
+            number.value = '';
+
+        })
+
+
+        function setGameOver() {
+            number.disabled = true;
+            btn.disabled = true;
+
+            const pbtnclicked = document.getElementById('pbtn')
+            pbtnclicked.addEventListener('click',  function(){
+                resetGame();
+              
+
+            });
+        }
+
+        function resetGame() {
+            guessCount = 1;
+            const resetParas = document.querySelectorAll('.resultParas p');
+            for (let i = 0; i < resetParas.length; i++) {
+                resetParas[i].textContent = '';
+            }
+            window.location.reload();
+            number.disabled = false;
+            btn.disabled = false;
+
+        }
+
+    </script>
+
+
+
+</body>
+
+</html>
